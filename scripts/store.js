@@ -25,6 +25,15 @@ const store = (function(){
     this.hideCheckedItems = !this.hideCheckedItems;
   };
 
+  const toggleItemCollapse = function(id) {
+   
+
+    const foundItem = this.findById(id);
+
+   foundItem.hidden = !foundItem.hidden;
+
+  };
+
   const setItemIsEditing = function(id, isEditing) {
     const item = this.findById(id);
     item.isEditing = isEditing;
@@ -51,6 +60,7 @@ const store = (function(){
     setSearchTerm,
     setItemIsEditing,
     setError,
+    toggleItemCollapse
   };
   
 }());

@@ -18,7 +18,6 @@ const api = (function(){
     let error;
 
 
-   console.log(args)
     store.setError('');
     return fetch(...args)
       .then(res => {

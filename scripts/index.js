@@ -1,12 +1,13 @@
 'use strict';
-/* global shoppingList, store, api, $ */
+/* global bookmarks, store, api, $ */
 
 $(document).ready(function() {
-  shoppingList.bindEventListeners();
-  shoppingList.render();
+  bookmarks.bindEventListeners();
+  bookmarks.render();
   api.getItems()
     .then((items) => {
+
       items.forEach((item) => store.addItem(item));
-      shoppingList.render();
+      bookmarks.render();
     });
 });
