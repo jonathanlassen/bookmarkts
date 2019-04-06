@@ -12,18 +12,11 @@ const store = (function(){
     return this.items.find(item => item.id === id);
   };
 
-  const findAndUpdate = function(id, newData){
-    Object.assign(this.items.find(item => item.id === id), newData); 
-  };
 
   const findAndDelete = function(id) {
     this.items = this.items.filter(item => item.id !== id);
   };
 
-
-  const toggleCheckedFilter = function() {
-    this.hideCheckedItems = !this.hideCheckedItems;
-  };
 
   const toggleItemCollapse = function(id) {
    
@@ -34,33 +27,23 @@ const store = (function(){
 
   };
 
-  const setItemIsEditing = function(id, isEditing) {
-    const item = this.findById(id);
-    item.isEditing = isEditing;
-  };
-
-  const setSearchTerm = function(term) {
-    this.searchTerm = term;
-  };
-
   const setError = function(term) {
     this.error = term;
   };
 
+  const setMinRating = function (rating){
+    store.minRating = rating;
+  };
+
   return {
     items: [],
-    hideCheckedItems: false,
     error:'',
-    searchTerm: '',
-    findAndUpdate,
     addItem,
     findById,
     findAndDelete,
-    toggleCheckedFilter,
-    setSearchTerm,
-    setItemIsEditing,
     setError,
-    toggleItemCollapse
+    toggleItemCollapse,
+    setMinRating
   };
   
 }());

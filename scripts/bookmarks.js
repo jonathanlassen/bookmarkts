@@ -4,29 +4,22 @@
 const bookmarks = (function(){
 
   const googleIcons = ["looks_one", "looks_two", "looks_3", "looks_4", "looks_5" ];
-
-
   function generateItemElement(item) {
-    const checkedClass = item.checked ? 'bookmarks-item__checked' : '';
-    const editBtnStatus = item.checked ? 'disabled' : '';
     let unCollapseCard ='';
-    let arrow=''
+    let arrow='';
     if (item.hidden)
     {
        unCollapseCard ='';
        arrow ='keyboard_arrow_up';
-      console.log('hi')
+
     } else {
 
        unCollapseCard ='hidden';
-       arrow ='keyboard_arrow_down';
-      console.log('hi')
+       arrow ='keyboard_arrow_down';  
     }
 
-    console.log(item)
-
-    let itemTitle = `<span class="bookmarks-item ${checkedClass}">${item.title}</span>`;
-    let itemUrl = `<span class="bookmarks-item ${checkedClass}">${item.url}</span>`;
+    let itemTitle = `<span class="bookmarks-item ">${item.title}</span>`;
+    let itemUrl = `<span class="bookmarks-item ">${item.url}</span>`;
     if (item.isEditing) {
       itemTitle = `
         <form class="js-edit-item ">
@@ -55,13 +48,12 @@ const bookmarks = (function(){
             <div style="float: left; max-width: 200px;">  
             ${item.desc}
             </div>
-            
-
+          
             <div style="clear: both; padding-top: 10px;">
               <i style="float:right; padding-top: 10px; color: #374a6d" class="material-icons js-item-delete">
                     delete
               </i>
-              <a class="button" style="float: left;" href="${item.url}">SITE</a>
+              <a class="button" style="float: left;" href="${item.url}">visit site</a>
             </div>
           </div>       
          
@@ -75,28 +67,63 @@ const bookmarks = (function(){
     const items = bookmarks.map((item) => generateItemElement(item));
     return items.join('');
   }
-  
+
+  function renderNav()
+  {
+    $('.left-column').html('');
+    const navrender = `<div class="top-label">
+    <label for="min-rating" >Min Bookmark Rating</label>
+    <select id="min-rating" class="min-rating"  name="min-rating">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+    <button type="button" class="button-to-add-bookmarket">Add item</button>
+    </div>
+      <div id="add-section" class="add-section hidden ">
+        <div class="bookmarks-list-error" style="color: red"></div>
+        <form id="js-bookmarks-list-form" class="add-form">
+          <label for="bookmark-title">Title</label>
+          <input type="text" name="bookmark-title" id="bookmark-title" class="bookmark-title-form form" placeholder="">
+          <label for="bookmark-list-entry">URL</label>
+          <input type="text" name="bookmark-url" class="bookmark-url-form form" placeholder="">
+          <label for="bookmark-desc">Description</label>
+          <textarea  name="comment" class="bookmark-desc-form form textarea"></textarea>     
+          <label for="Rating">Rating</label>
+          <select id="myselect" class="bookmark-ratings-form select-form"  name="rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <div class="bottom-button-div">
+            <button type="submit" class="submit-button">Submit</button>
+            <button type="button" class="cancel-button hidden">Cancel</button>
+          </div>
+        </form>
+      </div>`;
+      $('.left-column').html(navrender);
+  }
   
   function render() {
     // Filter item list if store prop is true by item.checked === false
-
+    let temp_items = [];
     $('.bookmarks-list-error').html('');
 
     let items = [ ...store.items ];
     if (store.hideCheckedItems) {
       items = items.filter(item => !item.checked);
     }
-  
-    // Filter item list if store prop `searchTerm` is not empty
-    if (store.searchTerm) {
-      items = items.filter(item => item.name.includes(store.searchTerm));
-    }
-  
-    // render the bookmarks list in the DOM
 
-    const bookmarksListItemsString = generatebookmarksItemsString(items);
-  
-    // insert that HTML into the DOM
+    temp_items = items;
+
+    if (store.minRating) {
+      temp_items = items.filter(item => item.rating >= store.minRating);
+    }
+    const bookmarksListItemsString = generatebookmarksItemsString(temp_items  );
     $('.js-bookmarks-list').html(bookmarksListItemsString);
     if(store.error) {
       $('.bookmarks-list-error').html(store.error);
@@ -104,17 +131,18 @@ const bookmarks = (function(){
   }
   
   function handleNewItemSubmit() {
-    $('#js-bookmarks-list-form').submit(function (event) {
+    $('.left-column').on('submit', event => {
       event.preventDefault();
       const newTitle = $('.bookmark-title-form').val();
       const newUrl = $('.bookmark-url-form').val();
       const newDesc = $('.bookmark-desc-form').val();
       const newRatings = $('.bookmark-ratings-form').val();
-      $('.js-bookmarks-list-entry').val('');
       api.createItem({title: newTitle, url: newUrl, desc: newDesc, rating: newRatings, test: 'hello'})
         .then((newItem) => {
           store.addItem(newItem);
+          store.setMinRating('1');
           render();
+          renderNav();
         }).catch(err => {
           store.setError(err.message);
           render();
@@ -126,22 +154,6 @@ const bookmarks = (function(){
     return $(item)
       .closest('.js-item-element')
       .data('item-id');
-  }
-  
-  function handleItemCheckClicked() {
-    $('.js-bookmarks-list').on('click', '.js-item-toggle', event => {
-      event.preventDefault();
-      const id = getItemIdFromElement(event.currentTarget);
-      const itemToCheck = store.findById(id);
-      api.updateItem(id, {checked: !itemToCheck.checked})
-        .then((newItem) => {
-          store.findAndUpdate(id, {checked: !itemToCheck.checked});
-          render();
-        }).catch(err => {
-          store.setError(err.message);
-          render();
-        });
-    });
   }
   
   function handleDeleteItemClicked() {
@@ -158,46 +170,6 @@ const bookmarks = (function(){
     });
   }
   
-  function handleEditbookmarksItemSubmit() {
-    $('.js-bookmarks-list').on('submit', '.js-edit-item', event => {
-      event.preventDefault();
-      const id = getItemIdFromElement(event.currentTarget);
-      const itemName = $(event.currentTarget).find('.bookmarks-item').val();
-
-        api.updateItem(id, {name: itemName})
-        .then((newItem) => {
-          store.findAndUpdate(id, {name: itemName});
-          render();
-        }).catch(err => {
-          store.setError(err.message);
-          render();
-        });
-    });
-  }
-  
-  function handleToggleFilterClick() {
-    $('.js-filter-checked').click(() => {
-      store.toggleCheckedFilter();
-      render();
-    });
-  }
-  
-  function handlebookmarksListSearch() {
-    $('.js-bookmarks-list-search-entry').on('keyup', event => {
-      const val = $(event.currentTarget).val();
-      store.setSearchTerm(val);
-      render();
-    });
-  }
-
-  function handleItemStartEditing() {
-    $('.js-bookmarks-list').on('click', '.js-item-edit', event => {
-      const id = getItemIdFromElement(event.target);
-      store.setItemIsEditing(id, true);
-      render();
-    });
-  }
-
   function handleToggleCollapse() {
     $('.js-bookmarks-list').on('click', '.toggleCollapse', event => {
       const id = getItemIdFromElement(event.target);
@@ -205,21 +177,45 @@ const bookmarks = (function(){
       render();
     });
   }
+
+  function handleToggleShowAdd() {
+    $('.left-column').on('click', '.button-to-add-bookmarket', event => {
+      event.preventDefault();
+        $('#add-section').removeClass("hidden");
+        $('.cancel-button').removeClass("hidden");
+        $('.button-to-add-bookmarket').addClass("hidden");
+    });
+  }
+
+  function handleToggleHideAdd() {
+    $('.left-column').on('click', '.cancel-button', event => {
+      event.preventDefault();
+        $('#add-section').addClass("hidden");
+        $('.cancel-button').addClass("hidden");
+        $('.button-to-add-bookmarket').removeClass("hidden");
+    });
+  }
+
+  function handleMinRatingChange() {
+    $('.left-column').on('change', '.min-rating', function() {
+        store.setMinRating(this.value);
+        render();
+    });
+  }
   
   function bindEventListeners() {
     handleNewItemSubmit();
-    handleItemCheckClicked();
     handleDeleteItemClicked();
-    handleEditbookmarksItemSubmit();
-    handleToggleFilterClick();
-    handlebookmarksListSearch();
-    handleItemStartEditing();
     handleToggleCollapse();
+    handleToggleShowAdd();
+    handleToggleHideAdd();
+    handleMinRatingChange();
   }
 
   // This object contains the only exposed methods from this module:
   return {
     render: render,
+    renderNav: renderNav,
     bindEventListeners: bindEventListeners,
   };
 }());

@@ -11,11 +11,10 @@
   .row {
     display: flex;
   }
-  
 
   .left-column {
     flex: 20%;
-    padding: 20px;
+    min-width: 300px;
     border: #c0c2c6 1px solid;
     margin-left: 50px;
     border-radius: 5px;
@@ -45,7 +44,6 @@
     display: none;
   }
 
-  
   .container {
 
     margin: 0 auto;
@@ -62,7 +60,6 @@
     transition: all 0.4s cubic-bezier(.25,.8,.25,1);
   }
 
-
   .bookmarks-list > .card:hover {
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
   }
@@ -74,11 +71,10 @@
     color: #374a6d;
   }
   
-
   .js-item-element
   {
-      min-width: 400px;
-      max-width: 400px;
+      min-width: 350px;
+      max-width: 350px;
   }
 
   .bottom-card{
@@ -99,7 +95,6 @@
     cursor: pointer;
   }
 
-
   a.button {
     text-align: center;
     font-size: 14px;
@@ -109,8 +104,8 @@
     text-decoration: none;
     padding: 7px;
     border-radius: 5px;
-
-    position: relative; }
+    position: relative; 
+  }
    
    a.button:hover {
     color:#293854;
@@ -123,6 +118,97 @@
       float:right;
       border: #ddd 1px solid;
       max-height: 150px;
-
-
   }
+
+  .form{
+    
+    width: 100%;
+    padding: 30px;
+    background:#f8f8f8;
+    border:1px solid rgba(0, 0, 0, 0.075);
+    color:#727272 !important;
+    font-size: 16px;  
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    transition: all 0.4s;
+    margin-bottom: 10px;
+  }
+
+  .form:hover{
+    border:1px solid #8BC3A3;
+  }
+
+  .textarea{
+    height: 200px;
+    max-height: 100px;
+    max-width: 100%;
+    padding: 5px;
+  }
+
+  .add-form{
+
+    padding: 20px;
+  }
+
+
+  button{
+    text-align: center;
+    font-size: 14px;
+    color: #ddd;
+    background-color:#374a6d;
+    margin: auto;
+    text-decoration: none;
+    padding: 7px;
+    border-radius: 5px;
+    border: none;
+    position: relative; }
+
+       
+  button:hover {
+    border: none;
+    color:#293854;
+    background-color: #9ab3e0;
+    text-decoration: none;
+  }
+  
+  label {
+    margin: 10px;
+  }
+
+.js-item-delete:hover{
+
+  cursor: pointer;
+}
+
+
+.bottom-button-div
+{
+  display: block;
+  text-align: center;
+  padding-top: 20px;
+
+}
+
+.button-to-add-bookmarket{
+
+
+  text-align: center;
+  margin-top: 20px;
+  margin-left: 20px;
+
+}
+
+.top-label{
+  padding-top: 10px;
+}
+
+
+.bookmarks-list-error{
+
+  padding: 10px;
+}
+
+h1{
+
+  text-align: center;
+}
