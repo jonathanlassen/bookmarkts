@@ -38,10 +38,10 @@ const bookmarks = (function(){
     return `
       <div class="card js-item-element" data-item-id="${item.id}">
         <div class="toggleCollapse">
-          <i style="float:right" class="material-icons ">
+          <i style="float:right; color: #374a6d;" class="material-icons ">
           ${googleIcons[(parseInt(item.rating)-1)]}
           </i>
-          <i style="float:right; padding-left: 10px; " class="material-icons ">
+          <i style="float:right; padding-left: 10px; color: #374a6d;" class="material-icons ">
            ${arrow}
           </i>
           ${itemTitle}
@@ -58,7 +58,7 @@ const bookmarks = (function(){
             
 
             <div style="clear: both; padding-top: 10px;">
-              <i style="float:right; padding-top: 10px;" class="material-icons js-item-delete">
+              <i style="float:right; padding-top: 10px; color: #374a6d" class="material-icons js-item-delete">
                     delete
               </i>
               <a class="button" style="float: left;" href="${item.url}">SITE</a>

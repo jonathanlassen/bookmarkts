@@ -15,7 +15,12 @@
 
   .left-column {
     flex: 20%;
-    padding: 10px;
+    padding: 20px;
+    border: #c0c2c6 1px solid;
+    margin-left: 50px;
+    border-radius: 5px;
+    margin-top: 10px;
+
   }
 
   .right-column {
@@ -66,6 +71,7 @@
 
     font-size: 16px;
     font-weight:bold;
+    color: #374a6d;
   }
   
 
@@ -98,7 +104,7 @@
     text-align: center;
     font-size: 14px;
     color: #ddd;
-    background-color: #1d1e18;
+    background-color:#374a6d;
     margin: auto;
     text-decoration: none;
     padding: 7px;
@@ -107,8 +113,8 @@
     position: relative; }
    
    a.button:hover {
-    color:#1d1e18;
-    background-color: #bbb;
+    color:#293854;
+    background-color: #9ab3e0;
     text-decoration: none;
   }
 
