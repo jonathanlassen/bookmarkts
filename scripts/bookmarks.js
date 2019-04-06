@@ -45,12 +45,12 @@ const bookmarks = (function(){
             <img class="link-image" src="https://image.thum.io/get/width/200/${item.url}">
 
 
-            <div style="float: left; max-width: 200px;">  
+            <div class="description-div">  
             ${item.desc}
             </div>
           
-            <div style="clear: both; padding-top: 10px;">
-              <i style="float:right; padding-top: 10px; color: #374a6d" class="material-icons js-item-delete">
+            <div class="card-footer" >
+              <i style="" class="material-icons js-item-delete">
                     delete
               </i>
               <a class="button" style="float: left;" href="${item.url}">visit site</a>

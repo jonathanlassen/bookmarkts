@@ -180,6 +180,21 @@
   cursor: pointer;
 }
 
+.card-footer
+{
+    clear: both; padding-top: 10px;
+
+}
+
+
+.description-div{
+  float: left; max-width: 150px;
+}
+
+
+.js-item-delete
+{float:right; padding-top: 10px; color: #374a6d}
+
 
 .bottom-button-div
 {
